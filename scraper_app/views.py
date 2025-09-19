@@ -88,7 +88,8 @@ def trigger_scrape(request):
         chrome_options = Options()
         # modern headless flag; if Chrome driver ignores it, --headless still works
         chrome_options.add_argument("--headless=new")
-        chrome_options.add_argument("--no-sandbox")                # required in many Linux hosts
+        chrome_options.add_argument("--no-sandbox")     # required in many Linux hosts
+        chrome_options.binary_location = "/usr/bin/chromium"
         chrome_options.add_argument("--disable-dev-shm-usage")    # avoid /dev/shm issues
         chrome_options.add_argument("--disable-gpu")              # recommended
         chrome_options.add_argument("--window-size=1920,1080")    # important for screenshots
@@ -102,7 +103,7 @@ def trigger_scrape(request):
         if chrome_bin:
             chrome_options.binary_location = chrome_bin
 
-        service = Service(ChromeDriverManager().install())
+        service = service = Service("/usr/bin/chromedriver")
         driver = webdriver.Chrome(service=service, options=chrome_options)
         driver.set_window_size(1920, 1080)
                 
@@ -494,4 +495,5 @@ def show_captcha(request):
         "scraper_app/solve_captchas.html",
         {"status": latest_status,"captcha_value": captcha_value},
     )
+
 
