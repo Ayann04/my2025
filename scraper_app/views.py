@@ -97,6 +97,12 @@ def trigger_scrape(request):
         chrome_options.add_argument("--disable-infobars")
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         chrome_options.add_experimental_option("useAutomationExtension", False)
+        options.binary_location = "/usr/bin/google-chrome-stable"   # 👈 tell Selenium where Chrome is
+
+        driver = webdriver.Chrome(
+            service=Service(ChromeDriverManager().install()),
+            options=options
+        )
 
         # If deployed on a platform where Chrome binary path is provided via env var
         chrome_bin = os.environ.get("GOOGLE_CHROME_BIN") or os.environ.get("CHROME_PATH")
@@ -495,5 +501,6 @@ def show_captcha(request):
         "scraper_app/solve_captchas.html",
         {"status": latest_status,"captcha_value": captcha_value},
     )
+
 
 
